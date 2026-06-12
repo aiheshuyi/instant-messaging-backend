@@ -15,8 +15,8 @@ import { Message } from './message/model/message.model';
       dialect: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'yang',
-      password: 'niupi666',
+      username: 'root',
+      password: '123456',
       database: 'nest',
       models: [User, Message],
       autoLoadModels: true
