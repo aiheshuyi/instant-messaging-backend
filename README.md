@@ -4,7 +4,7 @@
 ```md
 # Instant Messaging Backend
 
-基于 NestJS + MySQL + Sequelize + JWT + WebSocket 的即时通讯项目后端。
+基于 NestJS + MySQL + Sequelize + JWT + WebSocket + DeepSeek API 的即时通讯项目后端。
 
 ## 启动
 
