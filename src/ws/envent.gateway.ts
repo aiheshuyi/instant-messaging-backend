@@ -85,11 +85,12 @@ export class EventsGateway implements OnGatewayDisconnect {
     sendMessage(
         @MessageBody() data: {
             to: string,
+            from?: string,
         },
         @ConnectedSocket() client: Socket,
     ): WsResponse<unknown> {
         if (data?.to) {
-            client.to(data.to).emit('showMessage');
+            client.to(data.to).emit('showMessage', data);
         }
         return;
     }
