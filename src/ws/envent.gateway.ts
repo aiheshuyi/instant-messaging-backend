@@ -13,7 +13,7 @@ type UserStatus = 'online' | 'busy' | 'away' | 'offline';
 
 const validStatuses: UserStatus[] = ['online', 'busy', 'away', 'offline'];
 
-@WebSocketGateway(2999, {
+@WebSocketGateway({
     cors: {
         origin: '*',
     },
