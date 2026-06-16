@@ -1,22 +1,12 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNotEmpty } from "class-validator";
 
-export class findMessageListDTO {
+export class CreateAiConversationDto {
     @IsNotEmpty()
     @ApiProperty({
         default: 'yang',
         description: '当前登录用户',
-        example: 'yang',
         required: true,
     })
     username: string;
-
-    @IsNotEmpty()
-    @ApiProperty({
-        default: 'xiaoxin',
-        description: '当前聊天对象',
-        example: 'xiaoxin',
-        required: true,
-    })
-    currentChater: string;
 }

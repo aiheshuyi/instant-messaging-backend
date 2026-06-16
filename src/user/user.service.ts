@@ -2,40 +2,44 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from './model/user.model';
+
 @Injectable()
 export class UserService {
-  constructor(@InjectModel(User) private userModel: typeof User,) {
+  constructor(@InjectModel(User) private userModel: typeof User) { }
 
-  }
   async create(createUserDto: CreateUserDto) {
-    let res = await this.userModel.build({
+    const res = await this.userModel.build({
       ...createUserDto
     })
     await res.save()
     return res
   }
+
   async findAll() {
-    let res = await this.userModel.findAll()
-    return res
+    return await this.userModel.findAll({
+      attributes: ['id', 'username', 'avatar', 'createdAt', 'updatedAt']
+    })
   }
+
   async find(createUserDto: CreateUserDto) {
-    let res = await this.userModel.findOne({
+    return await this.userModel.findOne({
       where: {
         ...createUserDto
       }
     })
-    return res
   }
+
   async findOne(username: string) {
-    let res = await this.userModel.findOne({
+    const res = await this.userModel.findOne({
       where: {
         username
       }
     })
     return res !== null ? res : null
   }
+
   async uploadAvatar(username: string, avatar: string) {
-    let res = await this.userModel.update({
+    const res = await this.userModel.update({
       avatar
     }, {
       where: {
@@ -48,13 +52,13 @@ export class UserService {
       data: res
     }
   }
+
   async hasAvatar(username: string) {
-    let res = await this.userModel.findOne({
+    const res = await this.userModel.findOne({
       where: {
         username: username
       }
     })
-    return res.avatar !== null
+    return !!res?.avatar
   }
-
 }

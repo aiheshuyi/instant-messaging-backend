@@ -1,6 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
+import { IsNotEmpty, MaxLength } from "class-validator";
 
 export class CreateMessageDto {
+    @IsNotEmpty()
+    @MaxLength(200)
     @ApiProperty({
         default: 'Hello',
         description: '消息内容',
@@ -8,6 +11,8 @@ export class CreateMessageDto {
         required: true,
     })
     content: string;
+
+    @IsNotEmpty()
     @ApiProperty({
         default: 'yang',
         description: '消息发送者',
@@ -16,6 +21,7 @@ export class CreateMessageDto {
     })
     sender: string;
 
+    @IsNotEmpty()
     @ApiProperty({
         default: 'xiaoxin',
         description: '消息接收者',

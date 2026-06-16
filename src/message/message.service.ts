@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
+import { Op } from 'sequelize';
 import { CreateMessageDto } from './dto/create-message.dto';
 import { Message } from './model/message.model';
 
@@ -10,37 +11,78 @@ export class MessageService {
   ) { }
 
   async create(createMessageDto: CreateMessageDto) {
-    const time = Date.now()
     await this.messageModel.create(createMessageDto)
     return {
       code: '200',
       msg: '发送成功'
     }
   }
+
   async findMessageList(findMessageListObj) {
-    console.log(findMessageListObj)
-    const res1 = await this.messageModel.findAll({
+    const messageList = await this.messageModel.findAll({
       where: {
-        sender: findMessageListObj.username,
-        receiver: findMessageListObj.currentChater
-      }
+        [Op.or]: [
+          {
+            sender: findMessageListObj.username,
+            receiver: findMessageListObj.currentChater
+          },
+          {
+            sender: findMessageListObj.currentChater,
+            receiver: findMessageListObj.username
+          }
+        ]
+      },
+      order: [['id', 'ASC']]
     })
-    const res2 = await this.messageModel.findAll({
-      where: {
-        sender: findMessageListObj.currentChater,
-        receiver: findMessageListObj.username
-      }
-    })
+
     return {
       code: '200',
       msg: '查询成功',
       data: {
-        messageList: [
-          ...res1,
-          ...res2
-        ].sort((a, b) => a.id - b.id)
+        messageList
       }
     }
   }
 
+  async findPagedMessageList(findMessageListObj) {
+    const page = Number.isFinite(findMessageListObj.page) && findMessageListObj.page > 0
+      ? findMessageListObj.page
+      : 1
+    const pageSize = Number.isFinite(findMessageListObj.pageSize) && findMessageListObj.pageSize > 0
+      ? Math.min(findMessageListObj.pageSize, 50)
+      : 20
+    const offset = (page - 1) * pageSize
+    const where = {
+      [Op.or]: [
+        {
+          sender: findMessageListObj.sender,
+          receiver: findMessageListObj.receiver
+        },
+        {
+          sender: findMessageListObj.receiver,
+          receiver: findMessageListObj.sender
+        }
+      ]
+    }
+
+    const total = await this.messageModel.count({ where })
+    const messageList = await this.messageModel.findAll({
+      where,
+      order: [['id', 'DESC']],
+      limit: pageSize,
+      offset
+    })
+
+    return {
+      code: '200',
+      msg: '查询成功',
+      data: {
+        messageList: messageList.reverse(),
+        page,
+        pageSize,
+        total,
+        hasMore: offset + messageList.length < total
+      }
+    }
+  }
 }
