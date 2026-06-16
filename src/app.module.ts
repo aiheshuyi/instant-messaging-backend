@@ -12,15 +12,23 @@ import { AiModule } from './ai/ai.module';
 import { AiConversation } from './ai/model/ai-conversation.model';
 import { AiMessage } from './ai/model/ai-message.model';
 
+const databaseConfig = {
+  host: process.env.DB_HOST || process.env.MYSQLHOST,
+  port: Number(process.env.DB_PORT || process.env.MYSQLPORT || 3306),
+  username: process.env.DB_USER || process.env.MYSQLUSER,
+  password: process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD,
+  database: process.env.DB_NAME || process.env.MYSQLDATABASE || process.env.MYSQL_DATABASE,
+}
+
 @Module({
   imports: [
     SequelizeModule.forRoot({
       dialect: 'mysql',
-      host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT || 3306),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME,
+      host: databaseConfig.host,
+      port: databaseConfig.port,
+      username: databaseConfig.username,
+      password: databaseConfig.password,
+      database: databaseConfig.database,
       models: [User, Message, AiConversation, AiMessage],
       autoLoadModels: true,
       synchronize: true,
