@@ -1,4 +1,4 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 
 @Table
 export class User extends Model<User> {
@@ -6,6 +6,6 @@ export class User extends Model<User> {
   username: string;
   @Column
   password: string;
-  @Column
+  @Column(DataType.TEXT)
   avatar: string;
 }
