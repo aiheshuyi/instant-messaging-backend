@@ -1,6 +1,3 @@
-
-后端仓库 README 写：
-
 ```md
 # Instant Messaging Backend
 
