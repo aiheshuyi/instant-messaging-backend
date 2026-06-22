@@ -258,4 +258,4 @@ Vercel Frontend
 
 本项目基于开源即时通讯项目进行二次开发，主要用于学习 NestJS、MySQL、JWT、Socket.IO、SSE、AI 接口接入及生产环境部署。
 
-原项目地址：[Instant-messaging-React18](https://github.com/BoyYangzai/Instant-messaging-React18)
+原项目地址：[Instant-messaging-Nest](https://github.com/BoyYangzai/Instant-messaging-Nest)
